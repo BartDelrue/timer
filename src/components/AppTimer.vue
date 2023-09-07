@@ -7,7 +7,7 @@ const props = defineProps<{ title: string, duration: number }>()
 const seconds = ref<number>(props.duration)
 const {minute1, minute0, second1, second0} = useTime(seconds)
 
-let interval: number | undefined | null
+let interval: number | null = null
 
 function start() {
   if (interval) return
