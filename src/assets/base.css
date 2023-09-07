@@ -1,5 +1,3 @@
-
-
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --vt-c-white: #ffffff;
@@ -42,7 +40,9 @@ html {
   font-family: sans-serif;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -50,9 +50,9 @@ body {
   margin: 0;
   min-height: 100vh;
   background: radial-gradient(circle at 83% -76%, #00000015 41%, transparent 41%),
-  radial-gradient(circle at 76% -75%, #0000001a 51%, transparent 51%),
-  radial-gradient(circle at -73% 15%, #0000001e 60%, transparent 60%),
-  radial-gradient(#00254d, #00254d);
+    radial-gradient(circle at 76% -75%, #0000001a 51%, transparent 51%),
+    radial-gradient(circle at -73% 15%, #0000001e 60%, transparent 60%),
+    radial-gradient(#00254d, #00254d);
   display: flex;
   flex-direction: column;
   justify-content: center;

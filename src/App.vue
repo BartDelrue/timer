@@ -1,39 +1,31 @@
 <script setup lang="ts">
 import AppTimer from '@/components/AppTimer.vue'
-import {computed, onBeforeMount, ref, watch} from 'vue'
-import {useTime} from '@/composables/time'
+import { computed, ref } from 'vue'
+import { useTime } from '@/composables/time'
+import { useSearchParams } from '@/composables/searchParams'
 
-const timers = ref<{ id: number; duration: number; title: string }[]>([])
+interface Timer {
+  id: number
+  duration: number
+  title: string
+}
+
 const durInput = ref()
-
 const title = ref<string>('')
 const duration = ref<number>(0)
-const {minute1, minute0, second1, second0, toNumber} = useTime(duration)
-let autoIncrementId = 0
+const { minute1, minute0, second1, second0, toNumber } = useTime(duration)
+const { params } = useSearchParams<{ timers: Timer[] }>({ timers: [] })
 
+let autoIncrementId = 0
 function addTimer() {
   if (!duration.value) {
     durInput.value.focus()
     return
   }
-  timers.value.push({id: autoIncrementId++, duration: duration.value, title: title.value})
+  params.value.timers.push({ id: autoIncrementId++, duration: duration.value, title: title.value })
   duration.value = 0
   title.value = ''
 }
-
-onBeforeMount(() => {
-  const url = new URL(location.toString())
-  timers.value = JSON.parse(url.searchParams.get('timers') ?? '[]')
-})
-watch(
-    timers,
-    () => {
-      const url = new URL(location.toString())
-      url.searchParams.set('timers', JSON.stringify(timers.value))
-      history.replaceState({}, '', url.toString())
-    },
-    {deep: true}
-)
 
 // todo: ux, not happy with this
 const formattedDuration = computed({
@@ -52,13 +44,13 @@ const formattedDuration = computed({
   </header>
   <main>
     <h2 class="visually-hidden">Timers</h2>
-    <AppTimer v-for="t in timers" :duration="t.duration" :title="t.title" :key="t.id"/>
+    <AppTimer v-for="t in params.timers" :duration="t.duration" :title="t.title" :key="t.id" />
     <form class="box" @submit.prevent="addTimer">
       <h2 class="visually-hidden">Add timer</h2>
-      <div><label for="title">Title</label><input type="text" id="title" v-model="title"/></div>
+      <div><label for="title">Title</label><input type="text" id="title" v-model="title" /></div>
       <div>
         <label for="duration">Duration</label>
-        <input type="text" id="duration" ref="durInput" v-model.lazy="formattedDuration"/>
+        <input type="text" id="duration" ref="durInput" v-model.lazy="formattedDuration" />
       </div>
       <button type="submit">Add timer</button>
     </form>
@@ -66,7 +58,6 @@ const formattedDuration = computed({
 </template>
 
 <style scoped>
-
 main {
   max-width: 1280px;
   margin-inline: auto;
@@ -74,7 +65,7 @@ main {
 }
 
 form {
-  background: rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, 0.1);
   display: flex;
   flex-wrap: wrap;
   gap: 2em;
@@ -87,15 +78,16 @@ form > div {
 
 label {
   font-weight: bold;
-  padding-inline-end: .5em;
+  padding-inline-end: 0.5em;
 }
 
-label, input {
-  line-height: 1.6
+label,
+input {
+  line-height: 1.6;
 }
 
 form button {
-  font-size: .8rem;
+  font-size: 0.8rem;
   line-height: 1;
   margin-inline-start: auto;
 }

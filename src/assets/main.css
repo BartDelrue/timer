@@ -1,17 +1,26 @@
 @import './base.css';
 
 button {
-    border: .1em solid;
-    border-radius: .2em;
-    color: inherit;
-    font: inherit;
-    background-color: transparent;
-    padding: .5em 1em;
+  border: 0.1em solid;
+  border-radius: 0.2em;
+  color: inherit;
+  font: inherit;
+  background-color: transparent;
+  padding: 0.5em 1em;
+  transition: background-color .2s ease-in-out;
+}
+
+button:not(:disabled):is(:focus-visible, :hover) {
+  background-color: rgba(255,255,255,.1);
+}
+
+button:disabled {
+  color: #9eb5ce;
 }
 
 .box {
-    border: .1em solid;
-    border-radius: .2em;
-    margin-block: 2em;
-    padding: 1em;
+  border: 0.1em solid;
+  border-radius: 0.2em;
+  margin-block: 2em;
+  padding: 1em;
 }
