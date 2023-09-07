@@ -16,7 +16,7 @@ function start() {
 }
 
 function stop() {
-  clearInterval(interval)
+  if (interval) clearInterval(interval)
   interval = null
 }
 
